@@ -1,4 +1,7 @@
 import { RouterProvider } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import store, { persistor } from './redux/store';
 
 // project imports
 import router from 'routes';
@@ -10,10 +13,14 @@ import ScrollTop from 'components/ScrollTop';
 
 export default function App() {
   return (
-    <ThemeCustomization>
-      <ScrollTop>
-        <RouterProvider router={router} />
-      </ScrollTop>
-    </ThemeCustomization>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeCustomization>
+          <ScrollTop>
+            <RouterProvider router={router} />
+          </ScrollTop>
+        </ThemeCustomization>
+      </PersistGate>
+    </Provider>
   );
 }
