@@ -1,7 +1,8 @@
+
 import PropTypes from 'prop-types';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography } from '@mui/material';
 
-export default function DeleteAbonnementModal({ open, onClose, onDelete}) {
+export default function DeleteModal({ open, onClose, onDelete}) {
   return (
     <Dialog open={open} onClose={null} disableEscapeKeyDown={true}>
       <DialogTitle>Suppression de l'élément</DialogTitle>
@@ -20,7 +21,7 @@ export default function DeleteAbonnementModal({ open, onClose, onDelete}) {
   );
 }
 
-DeleteAbonnementModal.propTypes = {
+DeleteModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired

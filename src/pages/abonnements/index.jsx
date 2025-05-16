@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined, EllipsisOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import { useEffect, useState } from "react";
 import MainCard from 'components/MainCard';
 import { Button, Table, TableBody, TableContainer, TableHead, Paper, TableRow, Box, Typography, IconButton, TableCell, Pagination, FormControl, Select, MenuItem, Menu } from '@mui/material';
@@ -109,7 +109,7 @@ export default function AbonnementsIndex() {
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h5">Liste des abonnements</Typography>
           <Button variant="contained" size="medium" startIcon={<PlusOutlined />} onClick={openAdd}>
-            Ajouter un abonnement
+            Ajouter
           </Button>
         </Box>
 

@@ -11,11 +11,8 @@ export const useAbonnementStore = create(
   persist(
     (set, get) => ({
       abonnements: [],
-      selectedAbonnement: null,
 
       setAbonnements: list => set({ abonnements: list }),
-      setSelectedAbonnement: item => set({ selectedAbonnement: item }),
-      clearSelectedAbonnement: () => set({ selectedAbonnement: null }),
 
       fetchAbonnements: async (token, page, perPage) => {
         let result = await getAbonnements(token, page,perPage);
@@ -44,10 +41,6 @@ export const useAbonnementStore = create(
           abonnements: state.abonnements.filter(a => a.id !== id)
         }));
       },
-
-      selectedAbonnementById: id => {
-        get().setSelectedAbonnement(state => state.abonnements.find(a => a.id === id));
-      }
     }),
     {
       name: 'abonnements-storage',

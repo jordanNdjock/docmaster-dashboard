@@ -9,7 +9,7 @@ import ProtectedRoute from 'components/ProtectedRoute';
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
 
 // render - color
-const Color = Loadable(lazy(() => import('pages/component-overview/color')));
+const TypeDocumentsIndex = Loadable(lazy(() => import('pages/type_documents/index')));
 const AbonnementsIndex = Loadable(lazy(() => import('pages/abonnements/index')));
 const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 
@@ -35,8 +35,8 @@ const MainRoutes = {
       element: <AbonnementsIndex />
     },
     {
-      path: 'color',
-      element: <Color />
+      path: 'type-documents',
+      element: <TypeDocumentsIndex />
     },
     {
       path: 'shadow',

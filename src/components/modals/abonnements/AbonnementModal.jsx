@@ -36,7 +36,6 @@ export default function AbonnementModal({
 }) {
   const [errors, setErrors] = useState({});
 
-  // appelé quand on clique sur "Ajouter"/"Enregistrer"
   const handleSave = async () => {
     try {
       await schema.validate(form, { abortEarly: false });
