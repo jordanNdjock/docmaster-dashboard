@@ -152,7 +152,7 @@ export default function DocumentTypesIndex() {
                 <TableCell>Frais</TableCell>
                 <TableCell>Récompense</TableCell>
                 <TableCell>Validité</TableCell>
-                <TableCell>Date</TableCell>
+                <TableCell>Date d'enregistrement</TableCell>
                 <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
