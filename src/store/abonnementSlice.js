@@ -3,14 +3,13 @@ import { persist } from 'zustand/middleware';
 import {
   getAbonnements,
   addAbonnement,
-  ShowAbonnement,
   updateAbonnement,
   deleteAbonnement
 } from '../api/abonnements/abonnementServices';
 
 export const useAbonnementStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       abonnements: [],
       selectedAbonnement: null,
 
@@ -27,22 +26,16 @@ export const useAbonnementStore = create(
 
       createAbonnement: async (abonnementData, token) => {
         const newItem = await addAbonnement(abonnementData, token);
-        set(state => ({ abonnements: [...state.abonnements, newItem] }));
-      },
-
-      loadAbonnement: async (id, token) => {
-        const item = await ShowAbonnement(id, token);
-        set({ selectedAbonnement: item });
+        set(state => ({ abonnements: [...state.abonnements, newItem.data] }));
       },
 
       modifyAbonnement: async (id, abonnementData, token) => {
         const updated = await updateAbonnement(id, abonnementData, token);
         set(state => ({
           abonnements: state.abonnements.map(a =>
-            a.id === id ? updated : a
+            a.id === id ? updated.data : a
           )
         }));
-        return updated;
       },
 
       removeAbonnement: async (id, token) => {
@@ -50,6 +43,10 @@ export const useAbonnementStore = create(
         set(state => ({
           abonnements: state.abonnements.filter(a => a.id !== id)
         }));
+      },
+
+      selectedAbonnementById: id => {
+        get().setSelectedAbonnement(state => state.abonnements.find(a => a.id === id));
       }
     }),
     {
