@@ -1,21 +1,11 @@
 // assets
 import {
-  AppstoreAddOutlined,
-  AntDesignOutlined,
-  BarcodeOutlined,
-  BgColorsOutlined,
-  FontSizeOutlined,
-  LoadingOutlined
+  HeartFilled,
 } from '@ant-design/icons';
 
 // icons
 const icons = {
-  FontSizeOutlined,
-  BgColorsOutlined,
-  BarcodeOutlined,
-  AntDesignOutlined,
-  LoadingOutlined,
-  AppstoreAddOutlined
+  HeartFilled,
 };
 
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
@@ -30,7 +20,7 @@ const utilities = {
       title: 'Abonnements',
       type: 'item',
       url: '/abonnements',
-      icon: icons.FontSizeOutlined
+      icon: icons.HeartFilled
     },
   ]
 };

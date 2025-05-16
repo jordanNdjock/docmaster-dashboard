@@ -18,10 +18,11 @@ export const useAbonnementStore = create(
       setSelectedAbonnement: item => set({ selectedAbonnement: item }),
       clearSelectedAbonnement: () => set({ selectedAbonnement: null }),
 
-      fetchAbonnements: async token => {
-        let result = await getAbonnements(token);
-        result = result.data.abonnements;
-        set({ abonnements: result });
+      fetchAbonnements: async (token, page, perPage) => {
+        let result = await getAbonnements(token, page,perPage);
+        const data = result.data.abonnements;
+        set({ abonnements: data });
+        return result.data.meta;
       },
 
       createAbonnement: async (abonnementData, token) => {

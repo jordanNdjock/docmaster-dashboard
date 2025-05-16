@@ -1,8 +1,8 @@
 import { api } from '../config';
 
-export const getAbonnements = async (token) => {
+export const getAbonnements = async (token, page, perPage) => {
   try {
-    const response = await api.get('/abonnements', {
+    const response = await api.get('/abonnements?page=' + page + '&per_page=' + perPage, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
