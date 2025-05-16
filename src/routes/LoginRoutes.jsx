@@ -21,10 +21,6 @@ const LoginRoutes = {
           path: '/login',
           element: <LoginPage />
         },
-        {
-          path: '/register',
-          element: <RegisterPage />
-        }
       ]
     }
   ]

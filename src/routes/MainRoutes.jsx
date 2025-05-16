@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project imports
 import Loadable from 'components/Loadable';
 import DashboardLayout from 'layout/Dashboard';
+import ProtectedRoute from 'components/ProtectedRoute';
 
 // render- Dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -19,20 +20,15 @@ const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')))
 
 const MainRoutes = {
   path: '/',
-  element: <DashboardLayout />,
+  element: (
+    <ProtectedRoute>
+      <DashboardLayout />
+    </ProtectedRoute>
+  ),
   children: [
     {
-      path: '/',
+      path: '/index',
       element: <DashboardDefault />
-    },
-    {
-      path: 'dashboard',
-      children: [
-        {
-          path: 'default',
-          element: <DashboardDefault />
-        }
-      ]
     },
     {
       path: 'typography',

@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import Loadable from 'components/Loadable';
-import MinimalLayout from 'layout/MinimalLayout';
+import AuthLayout from '../layout/Auth';
 
 // project import
 const NotFound = Loadable(lazy(() => import('pages/errors/NotFound')));
@@ -9,7 +9,7 @@ const NotFound = Loadable(lazy(() => import('pages/errors/NotFound')));
 
 const ErrorRoutes = {
   path: '*',
-  element: <MinimalLayout />,
+  element: <AuthLayout />,
   children: [
     {
       path: '*',

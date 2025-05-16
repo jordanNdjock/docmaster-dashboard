@@ -2,7 +2,7 @@ import { api } from '../config';
 
 export const login = async (credentials) => {
   try {
-    const response = await api.post('/login', credentials, {
+    const response = await api.post('/auth/login', credentials, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -16,7 +16,7 @@ export const login = async (credentials) => {
 export const logout = async (token) => {
   try {
     const result = await api.post(
-      '/logout',
+      '/auth/logout',
       {},
       {
         headers: {

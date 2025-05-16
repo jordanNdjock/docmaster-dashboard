@@ -22,7 +22,7 @@ const icons = {
 
 const utilities = {
   id: 'utilities',
-  title: 'Utilities',
+  title: 'Gestion',
   type: 'group',
   children: [
     {
@@ -32,20 +32,6 @@ const utilities = {
       url: '/typography',
       icon: icons.FontSizeOutlined
     },
-    {
-      id: 'util-color',
-      title: 'Color',
-      type: 'item',
-      url: '/color',
-      icon: icons.BgColorsOutlined
-    },
-    {
-      id: 'util-shadow',
-      title: 'Shadow',
-      type: 'item',
-      url: '/shadow',
-      icon: icons.BarcodeOutlined
-    }
   ]
 };
 

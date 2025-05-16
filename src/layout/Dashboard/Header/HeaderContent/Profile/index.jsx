@@ -15,6 +15,8 @@ import Tabs from '@mui/material/Tabs';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { logoutUser } from 'redux/actions/userActions';
+
 
 // project imports
 import ProfileTab from './ProfileTab';
@@ -29,7 +31,9 @@ import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import avatar1 from 'assets/images/users/avatar-1.png';
-
+import { selectUserInfo } from 'redux/slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
   return (
@@ -49,6 +53,10 @@ function a11yProps(index) {
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
 export default function Profile() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector(selectUserInfo);
+  const admin = user.admin;
   const theme = useTheme();
 
   const anchorRef = useRef(null);
@@ -63,7 +71,10 @@ export default function Profile() {
     }
     setOpen(false);
   };
-
+  const handleLogout = async () => {
+    await dispatch(logoutUser(user.access_token));
+    navigate('/login');
+  };
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -90,7 +101,7 @@ export default function Profile() {
         <Stack direction="row" sx={{ gap: 1.25, alignItems: 'center', p: 0.5 }}>
           <Avatar alt="profile user" src={avatar1} size="sm" />
           <Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>
-            John Doe
+            {admin.nom_utilisateur}
           </Typography>
         </Stack>
       </ButtonBase>
@@ -123,16 +134,16 @@ export default function Profile() {
                         <Stack direction="row" sx={{ gap: 1.25, alignItems: 'center' }}>
                           <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                           <Stack>
-                            <Typography variant="h6">John Doe</Typography>
+                            <Typography variant="h6">{admin.nom_utilisateur}</Typography>
                             <Typography variant="body2" color="text.secondary">
-                              UI/UX Designer
+                              {admin.email}
                             </Typography>
                           </Stack>
                         </Stack>
                       </Grid>
                       <Grid>
-                        <Tooltip title="Logout">
-                          <IconButton size="large" sx={{ color: 'text.primary' }}>
+                        <Tooltip title="Deconnexion">
+                          <IconButton size="large" sx={{ color: 'text.primary' }} onClick={handleLogout}>
                             <LogoutOutlined />
                           </IconButton>
                         </Tooltip>
@@ -155,7 +166,7 @@ export default function Profile() {
                           }
                         }}
                         icon={<UserOutlined />}
-                        label="Profile"
+                        label="Profil"
                         {...a11yProps(0)}
                       />
                       <Tab
@@ -171,7 +182,7 @@ export default function Profile() {
                           }
                         }}
                         icon={<SettingOutlined />}
-                        label="Setting"
+                        label="Paramètre"
                         {...a11yProps(1)}
                       />
                     </Tabs>

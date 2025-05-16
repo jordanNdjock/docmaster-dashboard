@@ -1,5 +1,5 @@
 import { setUser, clearUser, setUsers, deleteUser, updateUser } from '../slices/userSlice';
-import { login, logout, register, removeUser } from '../../api/auth/authServices';
+import { login, logout } from '../../api/auth/authServices';
 import { fetchAllUsers } from 'api/users/userServices';
 
 export const DeleteUserAction = (id, token) => async (dispatch) => {
@@ -40,7 +40,7 @@ export const registerUser = (credentials) => async (dispatch) => {
 export const loginUser = (credentials) => async (dispatch) => {
   try {
     const result = await login(credentials);
-    dispatch(setUser(result));
+    dispatch(setUser(result.data));
   } catch (error) {
     throw new Error(error.message || 'Failed to login');
   }
