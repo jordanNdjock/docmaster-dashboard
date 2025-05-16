@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 
 // material-ui
 import List from '@mui/material/List';
@@ -10,37 +9,30 @@ import ListItemText from '@mui/material/ListItemText';
 // assets
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
-import { logoutUser } from 'redux/actions/userActions';
-import { selectUserInfo } from 'redux/slices/userSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import CustomSnackbar from 'components/CustomSnackbar';
+import { useUserStore } from 'store/userSlice';
+import { useSnackbar } from '../../../../../components/SnackbarContext';
 
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
 export default function ProfileTab() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector(selectUserInfo);
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const {logout} = useUserStore();
+  const openSnackbar = useSnackbar(); 
 
-  const handleCloseSnackbar = () => {
-    setSnackbar({ ...snackbar, open: false });
-  };
   const handleListItemClick = () => {
     navigate('/profil');
   };
   const handleLogout = async () => {
     try {
-      await dispatch(logoutUser(user.access_token));
+      await logout();
       navigate('/login');
     } catch (error) {
       const message = error.message || error.response?.data?.message || 'Failed to logout user';
-      setSnackbar({ open: true, message, severity: 'error' });
+      openSnackbar(message,'error');
     }
   };
   return (
-    <>
       <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
         <ListItemButton onClick={handleListItemClick}>
           <ListItemIcon>
@@ -55,8 +47,6 @@ export default function ProfileTab() {
           <ListItemText primary="Deconnexion" />
         </ListItemButton>
       </List>
-      <CustomSnackbar open={snackbar.open} onClose={handleCloseSnackbar} message={snackbar.message} severity={snackbar.severity} />
-    </>
   );
 }
 

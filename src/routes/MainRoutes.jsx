@@ -10,7 +10,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 
 // render - color
 const Color = Loadable(lazy(() => import('pages/component-overview/color')));
-const Typography = Loadable(lazy(() => import('pages/component-overview/typography')));
+const AbonnementsIndex = Loadable(lazy(() => import('pages/abonnements/index')));
 const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 
 // render - sample page
@@ -31,8 +31,8 @@ const MainRoutes = {
       element: <DashboardDefault />
     },
     {
-      path: 'typography',
-      element: <Typography />
+      path: 'abonnements',
+      element: <AbonnementsIndex />
     },
     {
       path: 'color',

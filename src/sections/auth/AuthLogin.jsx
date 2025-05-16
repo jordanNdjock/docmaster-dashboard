@@ -19,21 +19,21 @@ import { Formik } from 'formik';
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
 import CustomSnackbar from 'components/CustomSnackbar';
-import { loginUser } from 'redux/actions/userActions';
 
 // assets
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
-import { useDispatch } from 'react-redux';
+import { useUserStore } from '../../store/userSlice';
+import { useSnackbar } from '../../components/SnackbarContext';
 
 // ============================|| JWT - LOGIN ||============================ //
 
 export default function AuthLogin() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { login } = useUserStore();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const openSnackbar = useSnackbar();
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -45,22 +45,18 @@ export default function AuthLogin() {
 
   const handleLogin = async (values, { setSubmitting }) => {
     try {
-      await dispatch(loginUser({ nom_utilisateur: values.username, email: values.email, mdp: values.password }));
+      await login({ nom_utilisateur: values.username, email: values.email, mdp: values.password });
       navigate('/index');
     } catch (error) {
       const message = error.message || error.response?.data?.message || 'Login failed';
-      setSnackbar({ open: true, message: message || 'Login failed', severity: 'error' });
+      openSnackbar(message || 'Login failed','error');
     } finally {
       setSubmitting(false);
     }
   };
 
-   const handleCloseSnackbar = () => {
-    setSnackbar({ ...snackbar, open: false });
-  };
 
   return (
-    <>
       <Formik
         initialValues={{
           email: '',
@@ -170,7 +166,7 @@ export default function AuthLogin() {
               )}
               <Grid size={12}>
                 <AnimateButton>
-                  <Button type='submit' fullWidth size="large" variant="contained" color="primary">
+                  <Button disabled={isSubmitting} type='submit' fullWidth size="large" variant="contained" color="primary">
                     Se connecter
                   </Button>
                 </AnimateButton>
@@ -179,7 +175,5 @@ export default function AuthLogin() {
           </form>
         )}
       </Formik>
-      <CustomSnackbar open={snackbar.open} onClose={handleCloseSnackbar} message={snackbar.message} severity={snackbar.severity} />
-    </>
   );
 }

@@ -1,9 +1,8 @@
-import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { selectIsAuthenticated } from '../redux/slices/userSlice';
+import { useUserStore } from '../store/userSlice';
 
 const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
 
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
