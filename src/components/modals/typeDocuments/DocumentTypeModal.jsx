@@ -1,5 +1,5 @@
 // src/components/modals/DocumentTypeModal.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Dialog,
@@ -12,6 +12,24 @@ import {
   Checkbox,
   Button
 } from '@mui/material';
+import * as yup from 'yup';
+
+// 1) on définit un schéma Yup minimal
+const schema = yup.object({
+  titre: yup.string().required('Le titre est requis'),
+  libelle: yup.string().nullable(),
+  frais: yup
+    .number()
+    .typeError('Le frais doit être un nombre')
+    .min(0, 'Le frais doit être ≥ 0')
+    .required('Le frais est requis'),
+  recompense: yup
+    .number()
+    .typeError('La récompense doit être un nombre')
+    .min(0, 'La récompense doit être ≥ 0')
+    .required('La récompense est requise'),
+  validite: yup.boolean().required()
+});
 
 export default function DocumentTypeModal({
   open,
@@ -21,6 +39,22 @@ export default function DocumentTypeModal({
   onSave,
   isEdit
 }) {
+  const [errors, setErrors] = useState({});
+
+  const handleSave = async () => {
+    try {
+      await schema.validate(form, { abortEarly: false });
+      setErrors({});
+      onSave();
+    } catch (err) {
+      const errs = {};
+      err.inner.forEach(e => {
+        errs[e.path] = e.message;
+      });
+      setErrors(errs);
+    }
+  };
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
       <DialogTitle>
@@ -32,12 +66,16 @@ export default function DocumentTypeModal({
             label="Titre"
             value={form.titre}
             onChange={e => onChange({ ...form, titre: e.target.value })}
+            error={Boolean(errors.titre)}
+            helperText={errors.titre}
             fullWidth
           />
           <TextField
             label="Libellé"
             value={form.libelle}
             onChange={e => onChange({ ...form, libelle: e.target.value })}
+            error={Boolean(errors.libelle)}
+            helperText={errors.libelle}
             fullWidth
           />
           <TextField
@@ -45,6 +83,8 @@ export default function DocumentTypeModal({
             type="number"
             value={form.frais}
             onChange={e => onChange({ ...form, frais: e.target.value })}
+            error={Boolean(errors.frais)}
+            helperText={errors.frais}
             fullWidth
           />
           <TextField
@@ -52,6 +92,8 @@ export default function DocumentTypeModal({
             type="number"
             value={form.recompense}
             onChange={e => onChange({ ...form, recompense: e.target.value })}
+            error={Boolean(errors.recompense)}
+            helperText={errors.recompense}
             fullWidth
           />
           <FormControlLabel
@@ -63,11 +105,16 @@ export default function DocumentTypeModal({
             }
             label="Valide"
           />
+          {errors.validite && (
+            <Box color="error.main" fontSize="0.75rem" mt={-1}>
+              {errors.validite}
+            </Box>
+          )}
         </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Annuler</Button>
-        <Button variant="contained" onClick={onSave}>
+        <Button variant="contained" onClick={handleSave}>
           {isEdit ? 'Enregistrer' : 'Ajouter'}
         </Button>
       </DialogActions>

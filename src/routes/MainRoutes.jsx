@@ -11,7 +11,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 // render - color
 const TypeDocumentsIndex = Loadable(lazy(() => import('pages/type_documents/index')));
 const AbonnementsIndex = Loadable(lazy(() => import('pages/abonnements/index')));
-const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
+const UtilisateurIndex = Loadable(lazy(() => import('pages/utilisateurs')));
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
@@ -39,8 +39,8 @@ const MainRoutes = {
       element: <TypeDocumentsIndex />
     },
     {
-      path: 'shadow',
-      element: <Shadow />
+      path: 'utilisateurs',
+      element: <UtilisateurIndex />
     },
     {
       path: 'sample-page',

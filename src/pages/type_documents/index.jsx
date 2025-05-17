@@ -63,7 +63,7 @@ export default function DocumentTypesIndex() {
     const load = async () => {
       try {
         const meta = await fetchTypeDocuments(token, page, perPage);
-        setTotalPages(meta.last_page);
+        setTotalPages(meta?.last_page ?? 0);
       } catch (err) {
         openSnackbar(err.message, 'error');
       }

@@ -1,6 +1,13 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { login as apiLogin, logout as apiLogout } from '../api/auth/authServices';
+import {
+  fetchAllUsers as apiFetchAllUsers,
+  updateUser as apiUpdateUser,
+  removeUser as apiRemoveUser,
+  blockUser as apiBlockUser,
+  restoreUser as apiRestoreUser
+} from '../api/users/userServices';
 
 export const useUserStore = create(
   persist(
@@ -10,43 +17,85 @@ export const useUserStore = create(
       users: [],
       isAuthenticated: false,
 
-      setUser: user =>
-        set({ user, token: user?.token ?? null, isAuthenticated: true }),
+      fetchAllUsers: async (token, page, perPage) => {
+        const res = await apiFetchAllUsers(token, page, perPage);
+        if (res.success) {
+          set({ users: res.data.users });
+          return res.data.meta;
+        }
+        return null;
+      },
 
-      setUsers: users =>
-        set({ users }),
+      modifyUser: async (id, userData, token) => {
+        const res = await apiUpdateUser(id, userData, token);
+        if (res.success) {
+          set(state => ({
+            users: state.users.map(u =>
+              u.id === id ? res.data.user : u
+            )
+          }));
+        }
+        throw new Error(res.message || 'Login failed');
+      },
 
-      updateUser: updated =>
-        set(state => ({
-          users: state.users.map(u =>
-            u.id === updated.id ? { ...u, ...updated } : u
-          )
-        })),
+      deleteUser: async (id, token) => {
+        const res = await apiRemoveUser(id, token);
+        if (res.success) {
+          set(state => ({
+            users: state.users.filter(u => u.id !== id)
+          }));
+        }
+        throw new Error(res.message || 'Login failed');
+      },
 
-      deleteUser: id =>
-        set(state => ({
-          users: state.users.filter(u => u.id !== id)
-        })),
+      blockUser: async (id, token) => {
+        const res = await apiBlockUser(id, token);
+        if (res.success) {
+          set(state => ({
+            users: state.users.map(u =>
+              u.id === id ? { ...u, supprime: true } : u
+            )
+          }));
+          return res.data.user;
+        }
+        throw new Error(res.message || 'Login failed');
+      },
 
-      clearUser: () =>
-        set({ user: null, token: null, isAuthenticated: false }),
+      restoreUser: async (id, token) => {
+        const res = await apiRestoreUser(id, token);
+        if (res.success) {
+          set(state => ({
+            users: state.users.map(u =>
+              u.id === id ? { ...u, supprime: false } : u
+            )
+          }));
+          return res.data.user;
+        }
+        throw new Error(res.message || 'Login failed');
+      },
 
       login: async credentials => {
-        let user = await apiLogin(credentials);
-        const token = user.data.access_token;
-        user = user.data.admin;
-        set({ user, token, isAuthenticated: true });
-        return user;
+        const res = await apiLogin(credentials);
+        if (res.success) {
+          const token = res.data.access_token;
+          const user = res.data.admin;
+          set({ user, token, isAuthenticated: true });
+          return user;
+        }
+        throw new Error(res.message || 'Login failed');
       },
 
       logout: async () => {
         const token = get().token;
-        await apiLogout(token);
-        set({ user: null, token: null, isAuthenticated: false });
+        const res = await apiLogout(token);
+        if(res.success) {
+          set({ user: null, token: null, isAuthenticated: false });
+        }
+        throw new Error(res.message || 'Login failed');
       }
     }),
     {
-      name: 'user-storage',
+      name: 'user-storage'
     }
   )
 );

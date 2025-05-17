@@ -1,17 +1,19 @@
 // assets
 import {
-  HeartFilled,
-  FileTextFilled,
-  CopyFilled,
-  UserOutlined
+  HeartOutlined,
+  FileTextOutlined,
+  CopyOutlined,
+  UserOutlined,
+  MonitorOutlined
 } from '@ant-design/icons';
 
 // icons
 const icons = {
-  HeartFilled,
-  FileTextFilled,
-  CopyFilled,
-  UserOutlined
+  HeartOutlined,
+  FileTextOutlined,
+  CopyOutlined,
+  UserOutlined,
+  MonitorOutlined
 };
 
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
@@ -26,27 +28,34 @@ const utilities = {
       title: 'Abonnements',
       type: 'item',
       url: '/abonnements',
-      icon: icons.HeartFilled
+      icon: icons.HeartOutlined
     },
     {
       id: 'util-type-documents',
       title: 'Types de documents',
       type: 'item',
       url: '/type-documents',
-      icon: icons.CopyFilled
+      icon: icons.CopyOutlined
     },
     {
       id: 'util-documents',
       title: 'Documents',
       type: 'item',
       url: '/documents',
-      icon: icons.FileTextFilled
+      icon: icons.FileTextOutlined
+    },
+    {
+      id: 'util-declarations',
+      title: 'Déclarations',
+      type: 'item',
+      url: '/declarations',
+      icon: icons.MonitorOutlined
     },
     {
       id: 'util-users',
       title: 'Utilisateurs',
       type: 'item',
-      url: '/users',
+      url: '/utilisateurs',
       icon: icons.UserOutlined
     },
   ]

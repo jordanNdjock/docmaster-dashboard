@@ -9,38 +9,51 @@ import {
 
 export const useAbonnementStore = create(
   persist(
-    (set, get) => ({
+    (set) => ({
       abonnements: [],
 
       setAbonnements: list => set({ abonnements: list }),
 
       fetchAbonnements: async (token, page, perPage) => {
-        let result = await getAbonnements(token, page,perPage);
-        const data = result.data.abonnements;
-        set({ abonnements: data });
-        return result.data.meta;
+        const res = await getAbonnements(token, page, perPage);
+        if (res.success) {
+          set({ abonnements: res.data.abonnements });
+          return res.data.meta;
+        }
+        return null;
       },
 
       createAbonnement: async (abonnementData, token) => {
-        const newItem = await addAbonnement(abonnementData, token);
-        set(state => ({ abonnements: [...state.abonnements, newItem.data] }));
+        const res = await addAbonnement(abonnementData, token);
+        if (res.success) {
+          set(state => ({
+            abonnements: [...state.abonnements, res.data]
+          }));
+        }
+        return res;
       },
 
       modifyAbonnement: async (id, abonnementData, token) => {
-        const updated = await updateAbonnement(id, abonnementData, token);
-        set(state => ({
-          abonnements: state.abonnements.map(a =>
-            a.id === id ? updated.data : a
-          )
-        }));
+        const res = await updateAbonnement(id, abonnementData, token);
+        if (res.success) {
+          set(state => ({
+            abonnements: state.abonnements.map(a =>
+              a.id === id ? res.data : a
+            )
+          }));
+        }
+        return res;
       },
 
       removeAbonnement: async (id, token) => {
-        await deleteAbonnement(id, token);
-        set(state => ({
-          abonnements: state.abonnements.filter(a => a.id !== id)
-        }));
-      },
+        const res = await deleteAbonnement(id, token);
+        if (res.success) {
+          set(state => ({
+            abonnements: state.abonnements.filter(a => a.id !== id)
+          }));
+        }
+        return res;
+      }
     }),
     {
       name: 'abonnements-storage',

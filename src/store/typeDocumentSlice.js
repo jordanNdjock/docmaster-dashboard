@@ -1,40 +1,60 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import {getTypeDocuments, addTypeDocument, updateTypeDocument, deleteTypeDocument} from '../api/type_documents/typeDocumentServices';
+import {
+  getTypeDocuments,
+  addTypeDocument,
+  updateTypeDocument,
+  deleteTypeDocument as apiDeleteTypeDocument
+} from '../api/type_documents/typeDocumentServices';
 
 export const useTypeDocumentStore = create(
   persist(
     (set) => ({
       typeDocuments: [],
 
-      setTypeDocuments: list => set({ typeDocuments: list }),
-
       fetchTypeDocuments: async (token, page, perPage) => {
-        let result = await getTypeDocuments(token, page,perPage);
-        const data = result.data.type_documents;
-        set({ typeDocuments: data });
-        return result.data.meta;
+        const res = await getTypeDocuments(token, page, perPage);
+        if (res.success) {
+          set({ typeDocuments: res.data.type_documents });
+          return res.data.meta;
+        }
+        return null;
       },
 
-      createTypeDocument: async (abonnementData, token) => {
-        const newItem = await addTypeDocument(abonnementData, token);
-        set(state => ({ typeDocuments: [...state.typeDocuments, newItem.data] }));
+      createTypeDocument: async (docData, token) => {
+        const res = await addTypeDocument(docData, token);
+        if (res.success) {
+          set(state => ({
+            typeDocuments: [...state.typeDocuments, res.data]
+          }));
+        }
+        return res;
       },
-      updateTypeDocument: async (typeDocumentId, typeDocumentData, token) => {
-        const updatedItem = await updateTypeDocument(typeDocumentId, typeDocumentData, token);
-        set(state => ({
-          typeDocuments: state.typeDocuments.map(item =>
-            item.id === updatedItem.data.id ? updatedItem.data : item
-          )
-        }));
+
+      updateTypeDocument: async (id, docData, token) => {
+        const res = await updateTypeDocument(id, docData, token);
+        if (res.success) {
+          set(state => ({
+            typeDocuments: state.typeDocuments.map(item =>
+              item.id === res.data.id ? res.data : item
+            )
+          }));
+        }
+        return res;
       },
+
       deleteTypeDocument: async (id, token) => {
-        await deleteTypeDocument(id, token);
-        set(state => ({ typeDocuments: state.typeDocuments.filter(item => item.id !== id) }));
-      },
+        const res = await apiDeleteTypeDocument(id, token);
+        if (res.success) {
+          set(state => ({
+            typeDocuments: state.typeDocuments.filter(item => item.id !== id)
+          }));
+        }
+        return res;
+      }
     }),
     {
-      name: 'type-document-storage',
+      name: 'type-document-storage'
     }
   )
 );

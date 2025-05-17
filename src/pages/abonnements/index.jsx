@@ -94,7 +94,7 @@ export default function AbonnementsIndex() {
       const load = async () => {
         try {
           const meta = await fetchAbonnements(token, page, perPage);
-          setTotalPages(meta.last_page);
+          setTotalPages(meta?.last_page ?? 0);
         } catch (err) {
           openSnackbar(err.message, 'error');
         }
