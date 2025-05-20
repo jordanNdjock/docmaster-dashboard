@@ -18,19 +18,18 @@ import { Formik } from 'formik';
 // project imports
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
-import CustomSnackbar from 'components/CustomSnackbar';
 
 // assets
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
-import { useUserStore } from '../../store/userSlice';
 import { useSnackbar } from '../../components/SnackbarContext';
+import { useAuthStore } from '../../store/authSlice';
 
 // ============================|| JWT - LOGIN ||============================ //
 
 export default function AuthLogin() {
   const navigate = useNavigate();
-  const { login } = useUserStore();
+  const { login } = useAuthStore();
 
   const [showPassword, setShowPassword] = useState(false);
   const openSnackbar = useSnackbar();

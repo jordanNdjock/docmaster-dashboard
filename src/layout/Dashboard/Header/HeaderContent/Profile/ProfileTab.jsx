@@ -10,14 +10,14 @@ import ListItemText from '@mui/material/ListItemText';
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import { useNavigate } from 'react-router-dom';
-import { useUserStore } from 'store/userSlice';
 import { useSnackbar } from '../../../../../components/SnackbarContext';
+import { useAuthStore } from '../../../../../store/authSlice';
 
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
 export default function ProfileTab() {
   const navigate = useNavigate();
-  const {logout} = useUserStore();
+  const {logout} = useAuthStore();
   const openSnackbar = useSnackbar(); 
 
   const handleListItemClick = () => {
@@ -27,6 +27,7 @@ export default function ProfileTab() {
     try {
       await logout();
       navigate('/login');
+      openSnackbar('Déconnexion réussie','success');
     } catch (error) {
       const message = error.message || error.response?.data?.message || 'Failed to logout user';
       openSnackbar(message,'error');

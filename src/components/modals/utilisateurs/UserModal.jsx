@@ -18,7 +18,7 @@ const schema = yup.object({
   email: yup.string().email('Email invalide').required('L’email est requis'),
   tel: yup
     .string()
-    .matches(/^[0-9]+$/, 'Le téléphone doit contenir que des chiffres')
+    .matches(/^\+[1-9]\d{6,14}$/, 'Le téléphone doit être un numéro de téléphone valide')
     .required('Le téléphone est requis'),
   date_naissance: yup
     .date()

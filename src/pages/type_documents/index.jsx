@@ -24,7 +24,6 @@ import {
   PlusOutlined
 } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
-import { useUserStore } from '../../store/userSlice';
 import { useSnackbar } from '../../components/SnackbarContext';
 import { formatDateTimeFr } from '../../utils/formatDate';
 import DocumentTypeModal from '../../components/modals/typeDocuments/DocumentTypeModal';
@@ -32,7 +31,6 @@ import DeleteModal from '../../components/modals/DeleteModal';
 import { useTypeDocumentStore } from '../../store/typeDocumentSlice';
 
 export default function DocumentTypesIndex() {
-  const token = useUserStore(s => s.token);
   const types = useTypeDocumentStore(s => s.typeDocuments);
   const {
     fetchTypeDocuments,
@@ -62,14 +60,14 @@ export default function DocumentTypesIndex() {
   useEffect(() => {
     const load = async () => {
       try {
-        const meta = await fetchTypeDocuments(token, page, perPage);
+        const meta = await fetchTypeDocuments(page, perPage);
         setTotalPages(meta?.last_page ?? 0);
       } catch (err) {
         openSnackbar(err.message, 'error');
       }
     };
-    if (token) load();
-  }, [fetchTypeDocuments, token, page, perPage, openSnackbar]);
+    load();
+  }, [fetchTypeDocuments, page, perPage, openSnackbar]);
 
   const handleChangePage = (_, v) => setPage(v);
   const handleChangePerPage = e => { setPerPage(+e.target.value); setPage(1); };
@@ -102,9 +100,9 @@ export default function DocumentTypesIndex() {
   const handleSave = async () => {
     try {
       if (selectedId)
-        await updateTypeDocument(selectedId, form, token);
+        await updateTypeDocument(selectedId, form);
       else
-        await createTypeDocument(form, token);
+        await createTypeDocument(form);
 
       openSnackbar(
         selectedId ? 'Modifié avec succès' : 'Créé avec succès',
@@ -119,7 +117,7 @@ export default function DocumentTypesIndex() {
   const openDelete = () => { setDeleteOpen(true); handleMenuClose(); };
   const handleDelete = async () => {
     try {
-      await deleteTypeDocument(selectedId, token);
+      await deleteTypeDocument(selectedId);
       openSnackbar('Supprimé avec succès', 'success');
     } catch (err) {
       openSnackbar(err.message || 'Erreur', 'error');

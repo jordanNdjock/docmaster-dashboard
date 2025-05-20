@@ -31,8 +31,8 @@ import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import avatar1 from 'assets/images/users/avatar-1.png';
 import { useNavigate } from 'react-router-dom';
-import { useUserStore } from '../../../../../store/userSlice';
 import { useSnackbar } from '../../../../../components/SnackbarContext';
+import { useAuthStore } from '../../../../../store/authSlice';
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
   return (
@@ -53,8 +53,8 @@ function a11yProps(index) {
 
 export default function Profile() {
   const navigate = useNavigate();
-  const user = useUserStore(state => state.user);
-  const {logout} = useUserStore();
+  const user = useAuthStore(state => state.user);
+  const {logout} = useAuthStore();
   const theme = useTheme();
   const openSnackbar = useSnackbar();
 
@@ -74,6 +74,7 @@ export default function Profile() {
     try {
       await logout();
       navigate('/login');
+      openSnackbar('Déconnexion réussie','success');
     } catch (error) {
       const message = error.message || error.response?.data?.message || 'Failed to logout user';
       openSnackbar(message,'error');

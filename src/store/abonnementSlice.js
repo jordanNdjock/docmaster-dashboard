@@ -6,15 +6,15 @@ import {
   updateAbonnement,
   deleteAbonnement
 } from '../api/abonnements/abonnementServices';
+import { useAuthStore } from './authSlice';
 
 export const useAbonnementStore = create(
   persist(
     (set) => ({
       abonnements: [],
 
-      setAbonnements: list => set({ abonnements: list }),
-
-      fetchAbonnements: async (token, page, perPage) => {
+      fetchAbonnements: async (page, perPage) => {
+        const token = useAuthStore.getState().token;
         const res = await getAbonnements(token, page, perPage);
         if (res.success) {
           set({ abonnements: res.data.abonnements });
@@ -23,17 +23,18 @@ export const useAbonnementStore = create(
         return null;
       },
 
-      createAbonnement: async (abonnementData, token) => {
+      createAbonnement: async (abonnementData) => {
+        const token = useAuthStore.getState().token;
         const res = await addAbonnement(abonnementData, token);
         if (res.success) {
           set(state => ({
             abonnements: [...state.abonnements, res.data]
           }));
         }
-        return res;
       },
 
-      modifyAbonnement: async (id, abonnementData, token) => {
+      modifyAbonnement: async (id, abonnementData) => {
+        const token = useAuthStore.getState().token;
         const res = await updateAbonnement(id, abonnementData, token);
         if (res.success) {
           set(state => ({
@@ -42,17 +43,16 @@ export const useAbonnementStore = create(
             )
           }));
         }
-        return res;
       },
 
-      removeAbonnement: async (id, token) => {
+      removeAbonnement: async (id) => {
+        const token = useAuthStore.getState().token;
         const res = await deleteAbonnement(id, token);
         if (res.success) {
           set(state => ({
             abonnements: state.abonnements.filter(a => a.id !== id)
           }));
         }
-        return res;
       }
     }),
     {

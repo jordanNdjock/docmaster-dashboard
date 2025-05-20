@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
-import { useUserStore } from '../store/userSlice';
+import { useAuthStore } from '../store/authSlice';
 
 const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 };

@@ -6,13 +6,15 @@ import {
   updateTypeDocument,
   deleteTypeDocument as apiDeleteTypeDocument
 } from '../api/type_documents/typeDocumentServices';
+import { useAuthStore } from './authSlice';
 
 export const useTypeDocumentStore = create(
   persist(
     (set) => ({
       typeDocuments: [],
 
-      fetchTypeDocuments: async (token, page, perPage) => {
+      fetchTypeDocuments: async (page, perPage) => {
+        const token = useAuthStore.getState().token;
         const res = await getTypeDocuments(token, page, perPage);
         if (res.success) {
           set({ typeDocuments: res.data.type_documents });
@@ -21,17 +23,18 @@ export const useTypeDocumentStore = create(
         return null;
       },
 
-      createTypeDocument: async (docData, token) => {
+      createTypeDocument: async (docData) => {
+        const token = useAuthStore.getState().token;
         const res = await addTypeDocument(docData, token);
         if (res.success) {
           set(state => ({
             typeDocuments: [...state.typeDocuments, res.data]
           }));
         }
-        return res;
       },
 
-      updateTypeDocument: async (id, docData, token) => {
+      updateTypeDocument: async (id, docData) => {
+        const token = useAuthStore.getState().token;
         const res = await updateTypeDocument(id, docData, token);
         if (res.success) {
           set(state => ({
@@ -40,17 +43,16 @@ export const useTypeDocumentStore = create(
             )
           }));
         }
-        return res;
       },
 
-      deleteTypeDocument: async (id, token) => {
+      deleteTypeDocument: async (id) => {
+        const token = useAuthStore.getState().token;
         const res = await apiDeleteTypeDocument(id, token);
         if (res.success) {
           set(state => ({
             typeDocuments: state.typeDocuments.filter(item => item.id !== id)
           }));
         }
-        return res;
       }
     }),
     {

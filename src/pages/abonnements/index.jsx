@@ -2,7 +2,6 @@ import { DeleteOutlined, EditOutlined, EllipsisOutlined, PlusOutlined } from '@a
 import { useEffect, useState } from "react";
 import MainCard from 'components/MainCard';
 import { Button, Table, TableBody, TableContainer, TableHead, Paper, TableRow, Box, Typography, IconButton, TableCell, Pagination, FormControl, Select, MenuItem, Menu } from '@mui/material';
-import { useUserStore } from "../../store/userSlice";
 import { useAbonnementStore } from "../../store/abonnementSlice";
 import { useSnackbar } from '../../components/SnackbarContext';
 import { formatDateTimeFr } from '../../utils/formatDate';
@@ -11,7 +10,6 @@ import AbonnementModal from '../../components/modals/abonnements/AbonnementModal
 
 
 export default function AbonnementsIndex() {
-    const token = useUserStore(state => state.token);
     const abonnements = useAbonnementStore(state => state.abonnements);
     const { fetchAbonnements, removeAbonnement, createAbonnement, modifyAbonnement } = useAbonnementStore();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -66,9 +64,9 @@ export default function AbonnementsIndex() {
     const handleSave = async () => {
       try {
         if (selectedAbonnementId)
-          await modifyAbonnement(selectedAbonnementId, form, token);
+          await modifyAbonnement(selectedAbonnementId, form);
         else
-          await createAbonnement(form, token);
+          await createAbonnement(form);
         openSnackbar(
           selectedAbonnementId ? 'Abonnement modifié avec succès' : 'Abonnement créé avec succès',
           'success'
@@ -81,7 +79,7 @@ export default function AbonnementsIndex() {
 
     const handleDeleteAbonnement = async () => {
       try {
-        await removeAbonnement(selectedAbonnementId, token);
+        await removeAbonnement(selectedAbonnementId);
         openSnackbar('Véhicule supprimé avec succès !','success');
         setDeleteModalOpen(false);
       } catch (error) {
@@ -93,14 +91,14 @@ export default function AbonnementsIndex() {
     useEffect(() => {
       const load = async () => {
         try {
-          const meta = await fetchAbonnements(token, page, perPage);
+          const meta = await fetchAbonnements(page, perPage);
           setTotalPages(meta?.last_page ?? 0);
         } catch (err) {
           openSnackbar(err.message, 'error');
         }
       };
       load();
-    }, [fetchAbonnements, token, page, perPage, openSnackbar]);
+    }, [fetchAbonnements, page, perPage, openSnackbar]);
 
 
     return (

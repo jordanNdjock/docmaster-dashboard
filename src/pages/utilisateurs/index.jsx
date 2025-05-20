@@ -27,16 +27,16 @@ import {
   RollbackOutlined
 } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
-import { useUserStore } from '../../store/userSlice';
 import { useSnackbar } from '../../components/SnackbarContext';
 import { formatDateTimeFr } from '../../utils/formatDate';
 import DeleteModal from '../../components/modals/DeleteModal';
 import BlockUserModal from '../../components/modals/utilisateurs/BlockUserModal';
 import UserModal from '../../components/modals/utilisateurs/UserModal';
+import { useUserStore } from '../../store/userSlice';
 
 export default function UtilisateursIndex() {
-  const token = useUserStore(s => s.token);
   const users = useUserStore(s => s.users);
+  console.log(users)
   const {
     fetchAllUsers,
     createUser,
@@ -73,11 +73,11 @@ export default function UtilisateursIndex() {
 
   useEffect(() => {
     const load = async () => {
-      const meta = await fetchAllUsers(token, page, perPage);
+      const meta = await fetchAllUsers(page, perPage);
       setTotalPages(meta?.last_page ?? 0);
     };
-    if (token) load();
-  }, [fetchAllUsers, token, page, perPage]);
+    load();
+  }, [fetchAllUsers, page, perPage]);
 
   const handleChangePage = (_, v) => setPage(v);
   const handleChangePerPage = e => { setPerPage(+e.target.value); setPage(1); };
@@ -113,8 +113,8 @@ export default function UtilisateursIndex() {
 
   const handleSave = async () => {
     try {
-      if (selectedId) await modifyUser(selectedId, form, token);
-      else await createUser(form, token);
+      if (selectedId) await modifyUser(selectedId, form);
+      else await createUser(form);
       openSnackbar(selectedId ? 'Utilisateur modifié avec succès' : 'Utilisateur ajouté avec succès','success');
       setModalOpen(false);
     } catch (err) {
@@ -124,7 +124,7 @@ export default function UtilisateursIndex() {
 
   const openDelete = () => { setDeleteOpen(true); handleMenuClose(); };
   const handleDelete = async () => {
-    await deleteUser(selectedId, token);
+    await deleteUser(selectedId);
     openSnackbar('Supprimé','success');
     setDeleteOpen(false);
   };
@@ -132,8 +132,8 @@ export default function UtilisateursIndex() {
   const openBlock = () => { setBlockOpen(true); handleMenuClose(); };
   const handleBlock = async () => {
     const u = users.find(u => u.id === selectedId);
-    if (u.supprime) await restoreUser(selectedId, token);
-    else await blockUser(selectedId, token);
+    if (u.supprime) await restoreUser(selectedId);
+    else await blockUser(selectedId);
     openSnackbar(u.supprime ? 'Restauré avec succès' : 'Bloqué avec succès','success');
     setBlockOpen(false);
   };
@@ -166,7 +166,7 @@ export default function UtilisateursIndex() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map(u => (
+              {users.length > 0 && users.map(u => (
                 <TableRow key={u.id}>
                   <TableCell>{u.nom_famille}</TableCell>
                   <TableCell>{u.prenom}</TableCell>
