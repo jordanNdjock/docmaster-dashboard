@@ -15,13 +15,16 @@ import {
   Select,
   MenuItem,
   Pagination,
-  Menu
+  Menu,
+  TextField,
+  InputAdornment
 } from '@mui/material';
 import {
   DeleteOutlined,
   EditOutlined,
   EllipsisOutlined,
-  PlusOutlined
+  PlusOutlined,
+  SearchOutlined
 } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import { useSnackbar } from '../../components/SnackbarContext';
@@ -32,6 +35,8 @@ import { useTypeDocumentStore } from '../../store/typeDocumentSlice';
 
 export default function DocumentTypesIndex() {
   const types = useTypeDocumentStore(s => s.typeDocuments);
+  const [search, setSearch] = useState('');
+  const [filteredTypes, setFilteredTypes] = useState(types);
   const {
     fetchTypeDocuments,
     createTypeDocument,
@@ -68,6 +73,10 @@ export default function DocumentTypesIndex() {
     };
     load();
   }, [fetchTypeDocuments, page, perPage, openSnackbar]);
+
+  useEffect(() => {
+      setFilteredTypes(types);
+  }, [types]);
 
   const handleChangePage = (_, v) => setPage(v);
   const handleChangePerPage = e => { setPerPage(+e.target.value); setPage(1); };
@@ -131,6 +140,27 @@ export default function DocumentTypesIndex() {
       <MainCard>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h5">Types de documents</Typography>
+          <TextField
+                        sx={{width: '40%'}}
+                        variant="outlined"
+                        placeholder="Rechercher..."
+                        value={search}
+                        onChange={(e) => {
+                          const value = e.target.value.toLowerCase();
+                          setSearch(value);
+                          const filtered = types.filter(u =>
+                            `${u.prenom} ${u.titre} ${u.libelle}`.toLowerCase().includes(value)
+                          );
+                          setFilteredTypes(filtered);
+                        }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <SearchOutlined />
+                            </InputAdornment>
+                          ),
+                        }}
+          />
           <Button
             variant="contained"
             startIcon={<PlusOutlined />}
@@ -155,7 +185,7 @@ export default function DocumentTypesIndex() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {types.map(t => (
+              {filteredTypes.length > 0 && filteredTypes.map(t => (
                 <TableRow key={t.id}>
                   <TableCell>{t.id}</TableCell>
                   <TableCell>{t.titre}</TableCell>

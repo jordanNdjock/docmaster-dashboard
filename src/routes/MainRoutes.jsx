@@ -12,6 +12,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 const TypeDocumentsIndex = Loadable(lazy(() => import('pages/type_documents/index')));
 const AbonnementsIndex = Loadable(lazy(() => import('pages/abonnements/index')));
 const UtilisateurIndex = Loadable(lazy(() => import('pages/utilisateurs')));
+const DocmastersIndex = Loadable(lazy(() => import('pages/docmasters')));
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
@@ -41,6 +42,10 @@ const MainRoutes = {
     {
       path: 'utilisateurs',
       element: <UtilisateurIndex />
+    },
+    {
+      path: 'declarations',
+      element: <DocmastersIndex />
     },
     {
       path: 'sample-page',

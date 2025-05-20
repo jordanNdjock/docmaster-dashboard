@@ -1,7 +1,7 @@
-import { DeleteOutlined, EditOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, EllipsisOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { useEffect, useState } from "react";
 import MainCard from 'components/MainCard';
-import { Button, Table, TableBody, TableContainer, TableHead, Paper, TableRow, Box, Typography, IconButton, TableCell, Pagination, FormControl, Select, MenuItem, Menu } from '@mui/material';
+import { Button, Table, TableBody, TableContainer, TableHead, Paper, TableRow, Box, Typography, IconButton, TableCell, Pagination, FormControl, Select, MenuItem, Menu, TextField, InputAdornment } from '@mui/material';
 import { useAbonnementStore } from "../../store/abonnementSlice";
 import { useSnackbar } from '../../components/SnackbarContext';
 import { formatDateTimeFr } from '../../utils/formatDate';
@@ -11,6 +11,8 @@ import AbonnementModal from '../../components/modals/abonnements/AbonnementModal
 
 export default function AbonnementsIndex() {
     const abonnements = useAbonnementStore(state => state.abonnements);
+    const [search, setSearch] = useState('');
+    const [filteredAbonnements, setFilteredAbonnements] = useState(abonnements);
     const { fetchAbonnements, removeAbonnement, createAbonnement, modifyAbonnement } = useAbonnementStore();
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedAbonnementId, setSelectedAbonnementId] = useState(null);
@@ -100,12 +102,36 @@ export default function AbonnementsIndex() {
       load();
     }, [fetchAbonnements, page, perPage, openSnackbar]);
 
+    useEffect(() => {
+      setFilteredAbonnements(abonnements);
+    }, [abonnements]);
 
     return (
     <>
       <MainCard>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h5">Liste des abonnements</Typography>
+          <TextField
+                                  sx={{width: '40%'}}
+                                  variant="outlined"
+                                  placeholder="Rechercher..."
+                                  value={search}
+                                  onChange={(e) => {
+                                    const value = e.target.value.toLowerCase();
+                                    setSearch(value);
+                                    const filtered = abonnements.filter(u =>
+                                      `${u.prenom} ${u.titre} ${u.montant} ${u.nombre_docs_par_type}`.toLowerCase().includes(value)
+                                    );
+                                    setFilteredAbonnements(filtered);
+                                  }}
+                                  InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment position="start">
+                                        <SearchOutlined />
+                                      </InputAdornment>
+                                    ),
+                                  }}
+            />
           <Button variant="contained" size="medium" startIcon={<PlusOutlined />} onClick={openAdd}>
             Ajouter
           </Button>
@@ -124,7 +150,7 @@ export default function AbonnementsIndex() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {abonnements.map((abonnement) => (
+              {filteredAbonnements.length > 0 && filteredAbonnements.map((abonnement) => (
                 <TableRow key={abonnement.id}>
                   <TableCell>{abonnement.id}</TableCell>
                   <TableCell>{abonnement.titre}</TableCell>

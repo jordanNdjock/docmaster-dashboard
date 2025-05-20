@@ -16,7 +16,9 @@ import {
   MenuItem,
   Pagination,
   Menu,
-  Chip
+  Chip,
+  TextField,
+  InputAdornment
 } from '@mui/material';
 import {
   DeleteOutlined,
@@ -24,7 +26,8 @@ import {
   EllipsisOutlined,
   PlusOutlined,
   BlockOutlined,
-  RollbackOutlined
+  RollbackOutlined,
+  SearchOutlined
 } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import { useSnackbar } from '../../components/SnackbarContext';
@@ -36,7 +39,8 @@ import { useUserStore } from '../../store/userSlice';
 
 export default function UtilisateursIndex() {
   const users = useUserStore(s => s.users);
-  console.log(users)
+  const [search, setSearch] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState(users);
   const {
     fetchAllUsers,
     createUser,
@@ -78,6 +82,11 @@ export default function UtilisateursIndex() {
     };
     load();
   }, [fetchAllUsers, page, perPage]);
+
+  useEffect(() => {
+    setFilteredUsers(users);
+  }, [users]);
+
 
   const handleChangePage = (_, v) => setPage(v);
   const handleChangePerPage = e => { setPerPage(+e.target.value); setPage(1); };
@@ -143,6 +152,27 @@ export default function UtilisateursIndex() {
       <MainCard>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h5">Utilisateurs</Typography>
+           <TextField
+              sx={{width: '40%'}}
+              variant="outlined"
+              placeholder="Rechercher..."
+              value={search}
+              onChange={(e) => {
+                const value = e.target.value.toLowerCase();
+                setSearch(value);
+                const filtered = users.filter(u =>
+                  `${u.prenom} ${u.nom_famille} ${u.email} ${u.tel}`.toLowerCase().includes(value)
+                );
+                setFilteredUsers(filtered);
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchOutlined />
+                  </InputAdornment>
+                ),
+              }}
+            />
           <Button variant="contained" startIcon={<PlusOutlined />} onClick={openAdd}>
             Ajouter
           </Button>
@@ -166,7 +196,7 @@ export default function UtilisateursIndex() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.length > 0 && users.map(u => (
+              {filteredUsers.length > 0 && filteredUsers.map(u => (
                 <TableRow key={u.id}>
                   <TableCell>{u.nom_famille}</TableCell>
                   <TableCell>{u.prenom}</TableCell>

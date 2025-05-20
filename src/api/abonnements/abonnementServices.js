@@ -2,7 +2,7 @@ import { api } from '../config';
 
 export const getAbonnements = async (token, page, perPage) => {
   try {
-    const response = await api.get('/abonnements?page=' + page + '&per_page=' + perPage, {
+    const response = await api.get('/abonnement?page=' + page + '&per_page=' + perPage, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
@@ -16,7 +16,7 @@ export const getAbonnements = async (token, page, perPage) => {
 
 export const addAbonnement = async (abonnementData, token) => {
   try {
-    const response = await api.post('/abonnements', abonnementData, {
+    const response = await api.post('/abonnement', abonnementData, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
@@ -30,7 +30,7 @@ export const addAbonnement = async (abonnementData, token) => {
 
 export const updateAbonnement = async (id, abonnementData, token) => {
   try {
-    const response = await api.put(`/abonnements/${id}`, abonnementData, {
+    const response = await api.put(`/abonnement/${id}`, abonnementData, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
@@ -44,7 +44,7 @@ export const updateAbonnement = async (id, abonnementData, token) => {
 
 export const deleteAbonnement = async (id, token) => {
   try {
-    const response = await api.delete(`/abonnements/${id}`, {
+    const response = await api.delete(`/abonnement/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
