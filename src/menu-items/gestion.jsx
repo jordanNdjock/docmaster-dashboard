@@ -4,7 +4,8 @@ import {
   FileTextOutlined,
   CopyOutlined,
   UserOutlined,
-  MonitorOutlined
+  MonitorOutlined, 
+  LikeOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -13,14 +14,15 @@ const icons = {
   FileTextOutlined,
   CopyOutlined,
   UserOutlined,
-  MonitorOutlined
+  MonitorOutlined,
+  LikeOutlined
 };
 
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
 
 const utilities = {
   id: 'utilities',
-  title: 'Gestion',
+  title: 'Gestion admin',
   type: 'group',
   children: [
     {
@@ -57,6 +59,13 @@ const utilities = {
       type: 'item',
       url: '/utilisateurs',
       icon: icons.UserOutlined
+    },
+      {
+      id: 'util-users',
+      title: 'Abonnement des utilisateurs',
+      type: 'item',
+      url: '/abonnement-utilisateurs',
+      icon: icons.LikeOutlined
     },
   ]
 };
