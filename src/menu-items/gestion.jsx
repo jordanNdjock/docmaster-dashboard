@@ -61,7 +61,7 @@ const utilities = {
       icon: icons.UserOutlined
     },
       {
-      id: 'util-users',
+      id: 'util-abonnement-users',
       title: 'Abonnement des utilisateurs',
       type: 'item',
       url: '/abonnement-utilisateurs',

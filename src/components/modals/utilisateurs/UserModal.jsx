@@ -83,6 +83,7 @@ export default function UserModal({
             value={form.nom_utilisateur}
             onChange={e => onChange({ ...form, nom_utilisateur: e.target.value })}
             error={Boolean(errors.nom_utilisateur)}
+            disabled
             helperText={errors.nom_utilisateur}
             fullWidth
           />
@@ -90,6 +91,7 @@ export default function UserModal({
             label="Email"
             type="email"
             value={form.email}
+            disabled
             onChange={e => onChange({ ...form, email: e.target.value })}
             error={Boolean(errors.email)}
             helperText={errors.email}

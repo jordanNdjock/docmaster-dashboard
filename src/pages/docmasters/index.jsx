@@ -24,10 +24,12 @@ import MainCard from 'components/MainCard';
 import { useDocmasterStore } from '../../store/docmasterSlice';
 import { formatDateTimeFr } from '../../utils/formatDate';
 import DocmasterModal from '../../components/modals/docmasters/DocmasterModal';
+import { useSnackbar } from '../../components/SnackbarContext';
 
 export default function DocmastersIndex() {
   const docmasters = useDocmasterStore(s => s.docmasters);
   const { fetchDocmasters } = useDocmasterStore();
+  const openSnackbar = useSnackbar();
 
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
@@ -39,11 +41,16 @@ export default function DocmastersIndex() {
 
   useEffect(() => {
     const load = async () => {
-      const meta = await fetchDocmasters(page, perPage);
-      setTotalPages(meta?.last_page ?? 0);
+      try {
+        const meta = await fetchDocmasters(page, perPage);
+        setTotalPages(meta?.last_page ?? 0);
+      } catch (error) {
+        openSnackbar(err.message, 'error');
+      }
+
     };
     load();
-  }, [fetchDocmasters, page, perPage]);
+  }, [fetchDocmasters, page, perPage, openSnackbar]);
 
   useEffect(() => {
     setFiltered(docmasters);

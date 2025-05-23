@@ -77,11 +77,15 @@ export default function UtilisateursIndex() {
 
   useEffect(() => {
     const load = async () => {
-      const meta = await fetchAllUsers(page, perPage);
-      setTotalPages(meta?.last_page ?? 0);
+      try {
+        const meta = await fetchAllUsers(page, perPage);
+        setTotalPages(meta?.last_page ?? 0);
+      } catch (error) {
+        openSnackbar(error.message, 'error')
+      }
     };
     load();
-  }, [fetchAllUsers, page, perPage]);
+  }, [fetchAllUsers, page, perPage, openSnackbar]);
 
   useEffect(() => {
     setFilteredUsers(users);
