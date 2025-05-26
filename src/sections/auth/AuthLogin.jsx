@@ -45,10 +45,11 @@ export default function AuthLogin() {
   const handleLogin = async (values, { setSubmitting }) => {
     try {
       await login({ nom_utilisateur: values.username, email: values.email, mdp: values.password });
+      openSnackbar('✅ Connecté avec succès !!\n👋 Bon retour, ' + values.username, 'success');
       navigate('/index');
     } catch (error) {
-      const message = error.message || error.response?.data?.message || 'Login failed';
-      openSnackbar(message || 'Login failed','error');
+      const message = error.message || error.response?.data?.message || 'Connexion échouée';
+      openSnackbar(message || 'Connexion échouée','error');
     } finally {
       setSubmitting(false);
     }
