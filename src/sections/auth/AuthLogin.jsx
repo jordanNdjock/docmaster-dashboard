@@ -153,7 +153,7 @@ export default function AuthLogin() {
               </Grid>
               <Grid sx={{ mt: -1 }} size={12}>
                 <Stack direction="row" justifyContent="end" alignItems="center" spacing={2}>
-                  <Link variant="h6" component={RouterLink} to="#" color="primary">
+                  <Link variant="h6" component={RouterLink} to="#" color="secondary">
                     Mot de passe oublié?
                   </Link>
                 </Stack>

@@ -39,13 +39,13 @@ const utilities = {
       url: '/type-documents',
       icon: icons.CopyOutlined
     },
-    {
-      id: 'util-documents',
-      title: 'Documents',
-      type: 'item',
-      url: '/documents',
-      icon: icons.FileTextOutlined
-    },
+    // {
+    //   id: 'util-documents',
+    //   title: 'Documents',
+    //   type: 'item',
+    //   url: '/documents',
+    //   icon: icons.FileTextOutlined
+    // },
     {
       id: 'util-declarations',
       title: 'Déclarations',
@@ -60,13 +60,13 @@ const utilities = {
       url: '/utilisateurs',
       icon: icons.UserOutlined
     },
-      {
-      id: 'util-abonnement-users',
-      title: 'Abonnement des utilisateurs',
-      type: 'item',
-      url: '/abonnement-utilisateurs',
-      icon: icons.LikeOutlined
-    },
+    //   {
+    //   id: 'util-abonnement-users',
+    //   title: 'Abonnement des utilisateurs',
+    //   type: 'item',
+    //   url: '/abonnement-utilisateurs',
+    //   icon: icons.LikeOutlined
+    // },
   ]
 };
 

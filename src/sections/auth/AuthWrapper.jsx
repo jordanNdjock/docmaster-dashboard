@@ -21,10 +21,10 @@ export default function AuthWrapper({ children }) {
       <AuthBackground />
       <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
         <Grid sx={{ px: 3, mt: 3 }} size={12}>
-          {/* <Logo to="/" /> */}
-          <Typography variant="h3" color="primary">
-            DocMaster Dashboard
-          </Typography>
+          <Logo to="/index" />
+          {/* <Typography variant="h3" color="primary">
+            Admin
+          </Typography> */}
         </Grid>
         <Grid size={12}>
           <Grid
