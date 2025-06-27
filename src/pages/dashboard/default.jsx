@@ -26,10 +26,6 @@ import GiftOutlined from '@ant-design/icons/GiftOutlined';
 import MessageOutlined from '@ant-design/icons/MessageOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 
-import avatar1 from 'assets/images/users/avatar-1.png';
-import avatar2 from 'assets/images/users/avatar-2.png';
-import avatar3 from 'assets/images/users/avatar-3.png';
-import avatar4 from 'assets/images/users/avatar-4.png';
 import { useStatisticStore } from '../../store/statisticSlice';
 import { useEffect } from 'react';
 import { useSnackbar } from '../../components/SnackbarContext';
@@ -55,6 +51,7 @@ const actionSX = {
 
 export default function DashboardDefault() {
   const stats = useStatisticStore(state => state.statistics);
+  console.log(stats);
   const { fetchAllStatistics } = useStatisticStore();
   const openSnackbar = useSnackbar();
 
@@ -76,22 +73,31 @@ export default function DashboardDefault() {
         <Typography variant="h5">Tableau de bord</Typography>
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <AnalyticCard title="Total Abonnements" count={stats?.total_abonnements} />
+        <AnalyticCard title="Abonnements" count={stats?.total_abonnements} />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <AnalyticCard title="Total Déclarations" count={stats?.total_declarations} />
+        <AnalyticCard title="Déclarations Enregistrés" count={stats?.total_declarations} />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <AnalyticCard title="Total Documents" count={stats?.total_documents}  />
+        <AnalyticCard title="Documents Enregistrés" count={stats?.total_documents}  />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <AnalyticCard title="Total Types de documents" count={stats?.total_types_documents}  />
+        <AnalyticCard title="Types de Documents" count={stats?.total_types_documents}  />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <AnalyticCard title="Total abonnements utilisateurs" count={stats?.total_abonnements_utilisateurs}  />
+        <AnalyticCard title="Abonnements Utilisateurs" count={stats?.total_abonnements_utilisateurs}  />
       </Grid>
       <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <AnalyticCard title="Total utilisateurs" count={stats?.total_utilisateurs}  />
+        <AnalyticCard title="Utilisateurs Inscrits" count={stats?.total_utilisateurs}  />
+      </Grid>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+        <AnalyticCard title="Transactions Effectués" count={stats?.total_transactions}  />
+      </Grid>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+        <AnalyticCard title="Paiements" count={stats?.total_paiements}  />
+      </Grid>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+        <AnalyticCard title="Retraits Réussies" count={stats?.total_retraits}  />
       </Grid>
       <Grid sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} size={{ md: 8 }} />
       {/* row 2 */}

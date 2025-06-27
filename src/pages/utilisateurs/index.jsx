@@ -36,6 +36,7 @@ import DeleteModal from '../../components/modals/DeleteModal';
 import BlockUserModal from '../../components/modals/utilisateurs/BlockUserModal';
 import UserModal from '../../components/modals/utilisateurs/UserModal';
 import { useUserStore } from '../../store/userSlice';
+import Loading from '../../components/Loading';
 
 export default function UtilisateursIndex() {
   const users = useUserStore(s => s.users);
@@ -188,7 +189,7 @@ export default function UtilisateursIndex() {
               <TableRow>
                 <TableCell>Nom</TableCell>
                 <TableCell>Prénom</TableCell>
-                <TableCell>Utilisateur</TableCell>
+                <TableCell>Nom Utilisateur</TableCell>
                 <TableCell>Email</TableCell>
                 <TableCell>Téléphone</TableCell>
                 <TableCell>Naissance</TableCell>
@@ -200,7 +201,7 @@ export default function UtilisateursIndex() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredUsers.length > 0 && filteredUsers.map(u => (
+              {filteredUsers?.length > 0 ? filteredUsers.map(u => (
                 <TableRow key={u.id}>
                   <TableCell>{u.nom_famille}</TableCell>
                   <TableCell>{u.prenom}</TableCell>
@@ -234,7 +235,7 @@ export default function UtilisateursIndex() {
                         <DeleteOutlined style={{ marginRight:8, color: 'red' }} /> Supprimer
                       </MenuItem>
                       <MenuItem onClick={openBlock}>
-                        {users.find(x=>x.id===selectedId)?.supprime ? (
+                        {u.supprime ? (
                           <><RollbackOutlined style={{ marginRight:8, color: 'yellowgreen' }} /> Restaurer</>
                         ) : (
                           <><BlockOutlined style={{ marginRight:8, color: 'orange' }} /> Bloquer</>
@@ -243,7 +244,12 @@ export default function UtilisateursIndex() {
                     </Menu>
                   </TableCell>
                 </TableRow>
-              ))}
+              )): (
+                    <TableCell colSpan={11}>
+                        <Loading />
+                    </TableCell>
+                  )
+            }
             </TableBody>
           </Table>
         </TableContainer>
@@ -268,7 +274,7 @@ export default function UtilisateursIndex() {
         open={isBlockOpen}
         onClose={() => setBlockOpen(false)}
         onConfirm={handleBlock}
-        isBlock={!users.find(u=>u.id===selectedId)?.supprime}
+        isBlock={!filteredUsers?.find(u=>u.id===selectedId)?.supprime}
       />
 
       <UserModal

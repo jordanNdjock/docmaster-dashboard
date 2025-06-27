@@ -7,6 +7,7 @@ import { useSnackbar } from '../../components/SnackbarContext';
 import { formatDateTimeFr } from '../../utils/formatDate';
 import DeleteModal from '../../components/modals/DeleteModal';
 import AbonnementModal from '../../components/modals/abonnements/AbonnementModal';
+import Loading from '../../components/Loading';
 
 
 export default function AbonnementsIndex() {
@@ -141,7 +142,6 @@ export default function AbonnementsIndex() {
           <Table aria-label="abonnements table">
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
                 <TableCell>Titre</TableCell>
                 <TableCell>Montant</TableCell>
                 <TableCell>Nombre de documents par type</TableCell>
@@ -150,9 +150,8 @@ export default function AbonnementsIndex() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredAbonnements.length > 0 && filteredAbonnements.map((abonnement) => (
+              {filteredAbonnements?.length > 0 ? filteredAbonnements.map((abonnement) => (
                 <TableRow key={abonnement.id}>
-                  <TableCell>{abonnement.id}</TableCell>
                   <TableCell>{abonnement.titre}</TableCell>
                   <TableCell>{abonnement.montant}</TableCell>
                   <TableCell>{abonnement.nombre_docs_par_type}</TableCell>
@@ -171,7 +170,12 @@ export default function AbonnementsIndex() {
                     </Menu>
                   </TableCell>
                 </TableRow>
-              ))}
+              )) : (
+                 <TableCell colSpan={5}>
+                    <Loading />
+                 </TableCell>
+              )
+              }
             </TableBody>
           </Table>
         </TableContainer>

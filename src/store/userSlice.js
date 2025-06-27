@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import {
   fetchAllUsers as apiFetchAllUsers,
   updateUser as apiUpdateUser,
@@ -10,7 +9,7 @@ import {
 import { useAuthStore } from './authSlice';
 
 export const useUserStore = create(
-  persist(
+ 
     (set) => ({
       users: [],
 
@@ -18,7 +17,7 @@ export const useUserStore = create(
         const token = useAuthStore.getState().token;
         const res = await apiFetchAllUsers(token, page, perPage);
         if (res.success) {
-          set({ users: res.data.users });
+          set({ users: res.data.utilisateurs });
           return res.data.meta;
         }
         return null;
@@ -72,8 +71,4 @@ export const useUserStore = create(
         }
       },
     }),
-    {
-      name: 'user-storage'
-    }
-  )
 );

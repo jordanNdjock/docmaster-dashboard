@@ -8,7 +8,6 @@ export const useStatisticStore = create((set) => ({
   fetchAllStatistics: async () => {
     const token = useAuthStore.getState().token;
     const res = await getAllStatistics(token);
-    console.log(res);
     if (res.success) {
         set({ statistics: res.data.statistics });
     }

@@ -5,7 +5,8 @@ import {
   CopyOutlined,
   UserOutlined,
   MonitorOutlined, 
-  LikeOutlined
+  LikeOutlined,
+  ArrowsAltOutlined,
 } from '@ant-design/icons';
 
 // icons
@@ -15,7 +16,8 @@ const icons = {
   CopyOutlined,
   UserOutlined,
   MonitorOutlined,
-  LikeOutlined
+  LikeOutlined,
+  ArrowsAltOutlined
 };
 
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
@@ -52,6 +54,13 @@ const utilities = {
       type: 'item',
       url: '/declarations',
       icon: icons.MonitorOutlined
+    },
+     {
+      id: 'util-transactions',
+      title: 'Transactions',
+      type: 'item',
+      url: '/transactions',
+      icon: icons.ArrowsAltOutlined
     },
     {
       id: 'util-users',

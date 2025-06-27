@@ -13,6 +13,7 @@ const TypeDocumentsIndex = Loadable(lazy(() => import('pages/type_documents/inde
 const AbonnementsIndex = Loadable(lazy(() => import('pages/abonnements/index')));
 const UtilisateurIndex = Loadable(lazy(() => import('pages/utilisateurs')));
 const DocmastersIndex = Loadable(lazy(() => import('pages/docmasters')));
+const TransactionsIndex = Loadable(lazy(() => import('pages/transactions')));
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
@@ -46,6 +47,10 @@ const MainRoutes = {
     {
       path: 'declarations',
       element: <DocmastersIndex />
+    },
+    {
+      path: 'transactions',
+      element: <TransactionsIndex />
     },
     {
       path: 'sample-page',

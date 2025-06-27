@@ -32,6 +32,7 @@ import { formatDateTimeFr } from '../../utils/formatDate';
 import DocumentTypeModal from '../../components/modals/typeDocuments/DocumentTypeModal';
 import DeleteModal from '../../components/modals/DeleteModal';
 import { useTypeDocumentStore } from '../../store/typeDocumentSlice';
+import Loading from '../../components/Loading';
 
 export default function DocumentTypesIndex() {
   const types = useTypeDocumentStore(s => s.typeDocuments);
@@ -174,7 +175,6 @@ export default function DocumentTypesIndex() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
                 <TableCell>Titre</TableCell>
                 <TableCell>Libellé</TableCell>
                 <TableCell>Frais</TableCell>
@@ -185,9 +185,8 @@ export default function DocumentTypesIndex() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredTypes.length > 0 && filteredTypes.map(t => (
+              {filteredTypes?.length > 0 ? filteredTypes.map(t => (
                 <TableRow key={t.id}>
-                  <TableCell>{t.id}</TableCell>
                   <TableCell>{t.titre}</TableCell>
                   <TableCell>{t.libelle}</TableCell>
                   <TableCell>{t.frais}</TableCell>
@@ -212,7 +211,12 @@ export default function DocumentTypesIndex() {
                     </Menu>
                   </TableCell>
                 </TableRow>
-              ))}
+              )): (
+                    <TableCell colSpan={7}>
+                        <Loading />
+                    </TableCell>
+                  )
+              }
             </TableBody>
           </Table>
         </TableContainer>

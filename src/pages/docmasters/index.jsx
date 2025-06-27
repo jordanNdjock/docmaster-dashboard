@@ -25,6 +25,7 @@ import { useDocmasterStore } from '../../store/docmasterSlice';
 import { formatDateTimeFr } from '../../utils/formatDate';
 import DocmasterModal from '../../components/modals/docmasters/DocmasterModal';
 import { useSnackbar } from '../../components/SnackbarContext';
+import Loading from '../../components/Loading';
 
 export default function DocmastersIndex() {
   const docmasters = useDocmasterStore(s => s.docmasters);
@@ -101,7 +102,7 @@ export default function DocmastersIndex() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filtered.map(d => (
+              {filtered?.length > 0 ? filtered.map((d) => (
                 <TableRow key={d.id}>
                   <TableCell>{d.nom_trouveur}</TableCell>
                   <TableCell>{d.tel_trouveur}</TableCell>
@@ -127,7 +128,12 @@ export default function DocmastersIndex() {
                     </IconButton>
                   </TableCell>
                 </TableRow>
-              ))}
+              )) : (
+                    <TableCell colSpan={7}>
+                        <Loading />
+                    </TableCell>
+                  )
+              }
             </TableBody>
           </Table>
         </TableContainer>

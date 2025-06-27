@@ -1,65 +1,47 @@
 import PropTypes from 'prop-types';
-// material-ui
-import Chip from '@mui/material/Chip';
-import Grid from '@mui/material/Grid2';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-
-// project imports
+import { Skeleton, Stack, Typography } from '@mui/material';
 import MainCard from 'components/MainCard';
+import { RiseOutlined, FallOutlined, HeartFilled, UserOutlined, ProfileOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowsAltOutlined, UserSwitchOutlined, CopyOutlined, MonitorOutlined } from '@ant-design/icons';
 
-// assets
-import RiseOutlined from '@ant-design/icons/RiseOutlined';
-import FallOutlined from '@ant-design/icons/FallOutlined';
+const iconSX = { fontSize: '1.25rem', color: '#faad14e6' };
 
-const iconSX = { fontSize: '0.75rem', color: 'inherit', marginLeft: 0, marginRight: 0 };
+const iconMap = {
+  'Abonnements': <HeartFilled style={iconSX} />,
+  'Retraits Réussies': <ArrowUpOutlined style={iconSX} />,
+  'Paiements': <ArrowDownOutlined style={iconSX} />,
+  'Utilisateurs Inscrits': <UserOutlined style={iconSX} />,
+  'Documents Enregistrés': <ProfileOutlined style={iconSX} />,
+  'Transactions Effectués': <ArrowsAltOutlined style={iconSX} />,
+  'Abonnements Utilisateurs': <UserSwitchOutlined style={iconSX} />,
+  'Types de Documents': <CopyOutlined style={iconSX} />,
+  'Déclarations Enregistrés': <MonitorOutlined style={iconSX} />,
+};
 
-export default function AnalyticCard({ color = 'primary', title, count, percentage, isLoss, extra }) {
+export default function AnalyticCard({ title, count }) {
+  const Icon = iconMap[title] || <RiseOutlined style={iconSX} />;
+
   return (
     <MainCard contentSX={{ p: 2.25 }}>
-      <Stack sx={{ gap: 0.5 }}>
-        <Typography variant="h6" color="text.secondary">
-          {title}
-        </Typography>
-        <Grid container alignItems="center">
-          <Grid>
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Stack spacing={0.5}>
+          <Typography variant="h6" color="text.secondary">
+            {title}
+          </Typography>
+          {count === undefined || count === null ? (
+            <Skeleton variant="text" width={60} height={30} />
+          ) : (
             <Typography variant="h4" color="inherit">
               {count}
             </Typography>
-          </Grid>
-          {percentage && (
-            <Grid>
-              <Chip
-                variant="combined"
-                color={color}
-                icon={isLoss ? <FallOutlined style={iconSX} /> : <RiseOutlined style={iconSX} />}
-                label={`${percentage}%`}
-                sx={{ ml: 1.25, pl: 1 }}
-                size="small"
-              />
-            </Grid>
           )}
-        </Grid>
+        </Stack>
+        {Icon}
       </Stack>
-      {/* <Box sx={{ pt: 2.25 }}>
-        <Typography variant="caption" color="text.secondary">
-          You made an extra{' '}
-          <Typography variant="caption" sx={{ color: `${color || 'primary'}.main` }}>
-            {extra}
-          </Typography>{' '}
-          this year
-        </Typography>
-      </Box> */}
     </MainCard>
   );
 }
 
 AnalyticCard.propTypes = {
-  color: PropTypes.string,
-  title: PropTypes.string,
-  count: PropTypes.string,
-  percentage: PropTypes.number,
-  isLoss: PropTypes.bool,
-  extra: PropTypes.string
+  title: PropTypes.string.isRequired,
+  count: PropTypes.number
 };

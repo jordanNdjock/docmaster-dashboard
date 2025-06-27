@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import {
   getAbonnements,
   addAbonnement,
@@ -9,7 +8,7 @@ import {
 import { useAuthStore } from './authSlice';
 
 export const useAbonnementStore = create(
-  persist(
+  
     (set) => ({
       abonnements: [],
 
@@ -55,8 +54,4 @@ export const useAbonnementStore = create(
         }
       }
     }),
-    {
-      name: 'abonnements-storage',
-    }
-  )
 );

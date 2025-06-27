@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+
 import {
   getDocmasters,
   showDocmaster,
@@ -8,7 +8,7 @@ import {
 import { useAuthStore } from './authSlice';
 
 export const useDocmasterStore = create(
-  persist(
+
     (set) => ({
       docmasters: [],
 
@@ -44,8 +44,5 @@ export const useDocmasterStore = create(
         }
       }
     }),
-    {
-      name: 'docmasters-storage',
-    }
-  )
+
 );

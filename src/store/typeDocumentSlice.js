@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import {
   getTypeDocuments,
   addTypeDocument,
@@ -9,7 +8,7 @@ import {
 import { useAuthStore } from './authSlice';
 
 export const useTypeDocumentStore = create(
-  persist(
+
     (set) => ({
       typeDocuments: [],
 
@@ -55,8 +54,5 @@ export const useTypeDocumentStore = create(
         }
       }
     }),
-    {
-      name: 'type-document-storage'
-    }
-  )
+
 );
