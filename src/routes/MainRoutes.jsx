@@ -29,6 +29,10 @@ const MainRoutes = {
   ),
   children: [
     {
+      path: '/',
+      element: <DashboardDefault />
+    },
+    {
       path: '/index',
       element: <DashboardDefault />
     },
